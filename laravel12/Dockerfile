@@ -1,5 +1,5 @@
 # Usa una imagen base de PHP con Apache
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 # Instala las extensiones necesarias para Laravel
 RUN apt-get update && apt-get install -y \
@@ -19,7 +19,9 @@ RUN a2enmod rewrite
 COPY . /var/www/html
 
 # Establece los permisos correctos para el directorio de almacenamiento
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# Crea los directorios si no existen
+RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 # Establece el directorio de trabajo
 WORKDIR /var/www/html
